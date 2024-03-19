@@ -77,8 +77,28 @@ public class Order {
         this.picturesIds = picturesIds;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     public enum OrderStatus {
-        NEW("Сформирован"), PAID("Оплачен"), CLOSED("Закрыт");
+        NEW("Сформирован"),
+        PROCESSED("Обработан"),
+        PAID("Оплачен"),
+        CLOSED("Закрыт");
+
         private String title;
 
         OrderStatus(String title) {

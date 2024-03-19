@@ -1,13 +1,14 @@
 package com.picshop.order.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderToCatalogService {
@@ -20,13 +21,20 @@ public class OrderToCatalogService {
                 .build();
     }
 
-    public Mono<HttpStatusCode> archivePictures(List<Integer> picturesIds) {
+    public Mono<Boolean> archivePictures(List<Integer> picturesIds) {
+        String ids = String.join(",", picturesIds.stream().map(String::valueOf).toList());
         return webClient.get() // http method
-                .uri("/archive/{picturesIds}", picturesIds) // "/user/pictures/" + userId
+                .uri("/pictures/archive/{ids}", ids)
                 .retrieve()
                 .toEntity(Void.class)
-                .flatMap(objectResponseEntity ->
-                        Mono.just(objectResponseEntity.getStatusCode()))
-                .timeout(Duration.ofSeconds(5)); // TimeOutException
+                .log()
+                .flatMap(voidResponseEntity -> {
+                    if (!voidResponseEntity.getStatusCode().is2xxSuccessful()) {
+                        return Mono.just(false);
+                    }
+                    return Mono.just(true);
+                })
+                .timeout(Duration.ofSeconds(5)) // TimeOutException
+                .onErrorReturn(false);
     }
 }

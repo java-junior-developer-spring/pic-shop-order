@@ -29,8 +29,9 @@ public class OrderController {
     // - идентификаторы картин
     // - идентификатор пользователя
     // - необходимую доп. информацию определить самостоятельно
-    @PostMapping("/create")
+    @PostMapping
     public Mono<Order> createOrder(@RequestBody NewOrderDTORequest newOrder){
+        System.out.println(newOrder);
         return orderService.createOrder(newOrder);
     }
 
