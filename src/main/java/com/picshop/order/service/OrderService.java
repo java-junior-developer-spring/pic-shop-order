@@ -11,36 +11,34 @@ import reactor.core.publisher.Mono;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
+    private final OrderToCatalogService orderToCatalogService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderToCatalogService orderToCatalogService) {
         this.orderRepository = orderRepository;
+        this.orderToCatalogService = orderToCatalogService;
     }
 
-    public Flux<Order> getPicturesIdsByUserId(int userId){
+    public Flux<Order> getPicturesIdsByUserId(int userId) {
         return orderRepository.orderWithUserId(userId);
     }
 
-    public Mono<Order> createOrder(NewOrderDTORequest newOrder){
-        return orderRepository.save(new Order(
-                UUID.randomUUID(),
-                newOrder.getUserId(),
-                LocalDateTime.now(),
-                new ArrayList<>(newOrder.getPictures().keySet()),
-                newOrder.getPictures().values().stream()
-                        .map(BigDecimal::valueOf)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add)
-        ));
+    public Mono<Order> createOrder(NewOrderDTORequest newOrder) {
+        return orderRepository.save(new Order())
+                .flatMap(order -> {
+                    orderToCatalogService.archivePictures(order.getPicturesIds());
+                    return Mono.just(order);
+                });
         // 1. оправить пользователю на почту
         // 2. оправить продавцу на почту
-        // 3. убрать картины из показа
-
+        // 3. убрать картины из показа - запрос в сервис каталога:8081
     }
 }
+
+// [] <- CatalogService
+//    <- NotService
