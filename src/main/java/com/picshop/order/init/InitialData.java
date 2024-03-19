@@ -27,7 +27,7 @@ public class InitialData {
                                 new Order(UUID.randomUUID(), 2, LocalDateTime.now().minusMonths(7), List.of(1, 4)),
                                 new Order(UUID.randomUUID(), 1, LocalDateTime.now().minusYears(1), List.of(5))
                         )
-                )
+                )// Flux<>
                 .subscribeOn(Schedulers.parallel())
                 .subscribe();
     }

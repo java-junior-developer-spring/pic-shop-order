@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -27,15 +29,20 @@ public class Order {
     private LocalDateTime orderedAt;
     @JsonProperty("pictures_ids")
     private List<Integer> picturesIds;
+    private BigDecimal price;
+    private OrderStatus status;
 
     public Order() {
     }
 
-    public Order(UUID id, int userId, LocalDateTime orderedAt, List<Integer> picturesIds) {
+    public Order(UUID id, int userId, LocalDateTime orderedAt,
+                 List<Integer> picturesIds, BigDecimal price) {
         this.id = id;
         this.userId = userId;
         this.orderedAt = orderedAt;
         this.picturesIds = picturesIds;
+        this.price = price;
+        status = OrderStatus.NEW;
     }
 
     public UUID getId() {
@@ -69,4 +76,18 @@ public class Order {
     public void setPicturesIds(List<Integer> picturesIds) {
         this.picturesIds = picturesIds;
     }
+
+    public enum OrderStatus {
+        NEW("Сформирован"), PAID("Оплачен"), CLOSED("Закрыт");
+        private String title;
+
+        OrderStatus(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
+
 }
