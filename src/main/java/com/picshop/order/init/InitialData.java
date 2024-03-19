@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import reactor.core.scheduler.Schedulers;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -23,9 +24,9 @@ public class InitialData {
     public void initOrder() {
         orderRepository.saveAll(
                         List.of(
-                                new Order(UUID.randomUUID(), 1, LocalDateTime.now().minusDays(23), List.of(2, 3)),
-                                new Order(UUID.randomUUID(), 2, LocalDateTime.now().minusMonths(7), List.of(1, 4)),
-                                new Order(UUID.randomUUID(), 1, LocalDateTime.now().minusYears(1), List.of(5))
+                                new Order(UUID.randomUUID(), 1, LocalDateTime.now().minusDays(23), List.of(2, 3), BigDecimal.TEN),
+                                new Order(UUID.randomUUID(), 2, LocalDateTime.now().minusMonths(7), List.of(1, 4), BigDecimal.valueOf(300000)),
+                                new Order(UUID.randomUUID(), 1, LocalDateTime.now().minusYears(1), List.of(5), BigDecimal.valueOf(43562222))
                         )
                 )// Flux<>
                 .subscribeOn(Schedulers.parallel())
