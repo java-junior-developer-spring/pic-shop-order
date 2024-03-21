@@ -24,7 +24,7 @@ public class OrderToCatalogService {
     public Mono<Boolean> archivePictures(List<Integer> picturesIds) {
         String ids = String.join(",", picturesIds.stream().map(String::valueOf).toList());
         return webClient.get() // http method
-                .uri("/pictures/archive/{ids}", ids)
+                .uri("/pictures/archive/{ids}", ids) // 2,8,9
                 .retrieve()
                 .toEntity(Void.class)
                 .log()

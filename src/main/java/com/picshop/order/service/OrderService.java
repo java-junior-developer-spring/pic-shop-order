@@ -43,8 +43,8 @@ public class OrderService {
                 .publishOn(Schedulers.boundedElastic())
                 .doOnNext(order ->
                         orderToCatalogService.archivePictures(order.getPicturesIds())
-                                .log()
-                                .block(Duration.ofSeconds(5))
+                                 .log()
+                                 .block(Duration.ofSeconds(5)) // true / false
                 );
         // 1. оправить пользователю на почту
         // 2. оправить продавцу на почту
@@ -54,3 +54,13 @@ public class OrderService {
 
 // [] <- CatalogService
 //    <- NotService
+// -> 123 -> Consumer -> сохранить данные в БД ->
+// [c] -> Consumer -> []
+//        Consumer
+// [] [] [] C01 C04 C03
+
+//  Order
+class OrderToKafka {
+    private UUID number;
+    private BigDecimal price;
+}
