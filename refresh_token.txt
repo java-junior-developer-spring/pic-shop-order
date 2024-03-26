@@ -1,0 +1,10 @@
+Используется для получения нового access токена
+Grant Type: refresh_token
+Flow:
+I. Клиент отправляет POST запрос:
+    1. grant_type=refresh_token
+    2. refresh_token=
+    3. scope=
+
+II. Если данные прошли проверку на сервере авторизации,
+сервер авторизации отправляет клиенту access_token, token_type, expires_in, refresh_token.

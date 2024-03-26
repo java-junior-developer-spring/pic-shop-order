@@ -1,0 +1,31 @@
+Client:
+clientId - 825hct7567tBC
+clientSecret - nvtiwntwuaytvbuiluni
+
+
+
+Grant Types:
+1. Authorization Code (с расширением PKCE или без него)
+2. Client Credentials
+3. Device Code
+4. Refresh Token
+5. JWT Bearer
+6. Implicit Flow (Legacy)
+7. Password Grant (Legacy)
+
+Authentication Method Types:
+1. Client Secret Basic
+2. Client Secret Post
+3. Client Secret Jwt
+4. None
+
+Proof Key for Code Exchange (PKCE) - расширение для Authorization Code
+1. Клиент генерирует некий код (code_verifier)
+2. Клиент шифрует данный код (code_challenge) произвольным алгоритмом (code_challenge_method)
+3. Когда клиент отправляет запрос на временный код авторизации в параметрах дополнительно передаются:
+    code_challenge и code_challenge_method
+4. Когда клиент отправляет запрос на получение access токена,
+    в теле сообщения дополнительно передается code_verifier
+
+User consent - пользователю отображается страница со списком ресурсов, к которым приложение хочет получить доступ.
+Если пользователь отклоняет разрешения, клиент не получает access токен и не может работать с ресурсами от имени пользователя.

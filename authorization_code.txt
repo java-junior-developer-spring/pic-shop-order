@@ -1,0 +1,39 @@
+Если требуется пользовательская авторизация
+Grant Type: authorization_code
+Flow: // id authorization_code client_id client_secret redirect_uri scope
+I. Клиент отправляет следующие параметры:
+    1. response_type=code
+    2. client_id=
+    3. redirect_uri=
+    4. scope=
+        Дополнительно (при использовании PKCE):
+    5. code_challenge_method=S256
+    6. code_challenge=
+http://127.0.0.1:8080/oauth2/authorize?response_type=code&client_id=IDVALUE&redirect_uri=URIVALUE&scope=SCOPEVALUE&code_challenge_method=S256&code_challenge=CODEVALUE
+
+II. Если данные прошли проверку на сервере авторизации,
+сервер авторизации отправляет форму авторизации пользователя
+
+III. Если пользователь успешно авторизован на сервере авторизации,
+сервер авторизации отправляет клиенту временный код авторизации.
+В адресной строке (redirect_uri): code=
+
+IV. Клиент отправляет на сервер авторизации POST запрос со следующими данными:
+    1. grant_type=authorization_code
+    2. code=
+    3. scope=
+    4. redirect_uri=
+        В заголовках (если authMethod: client_secret_basic) или
+        в теле сообщения (если authMethod: client_secret_post)
+    5. client_id=
+        В заголовках (если authMethod: client_secret_basic) или
+        в теле сообщения (если authMethod: client_secret_post)
+    6. client_secret=
+        Дополнительно (при использовании PKCE):
+    7. code_verifier=
+
+V. Если данные прошли проверку на сервере авторизации,
+сервер авторизации отправляет клиенту access_token,
+token_type, expires_in, refresh_token.
+
+
